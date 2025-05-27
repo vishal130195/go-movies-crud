@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/vishal130195/go-movies-crud/internal/models"
 	"github.com/vishal130195/go-movies-crud/internal/storage"
 	"log"
@@ -108,11 +109,12 @@ func (h *MovieHandler) UpdateMovie(w http.ResponseWriter, r *http.Request) {
 	}
 	err = h.store.Update(movie.ID, &movie)
 	if err != nil {
-		http.Error(w, "Errored out while updating movie", http.StatusInternalServerError)
+
+		http.Error(w, fmt.Errorf("Errored out while updating movie: %w", err).Error(), http.StatusInternalServerError)
 	}
 	err = json.NewEncoder(w).Encode(movie)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+
 	}
 	log.Printf("INFO: POST request received for updateing movie with ID: %s", movie.ID)
 }
