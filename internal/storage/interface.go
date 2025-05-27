@@ -7,6 +7,6 @@ type MovieStore interface {
 	GetAll() ([]models.Movie, error)
 	GetByID(id string) (*models.Movie, error)
 	Create(movie *models.Movie) error
-	//Update(id string, movie *models.Movie) error
-	//Delete(id string) error
+	Update(id string, movie *models.Movie) error
+	Delete(id string) error
 }

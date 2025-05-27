@@ -3,8 +3,11 @@ package memory
 import (
 	"errors"
 	"github.com/vishal130195/go-movies-crud/internal/models"
+	"strconv"
 	"sync"
 )
+
+var counter = 0
 
 type MemoryMovieStore struct {
 	mutex  sync.RWMutex
@@ -39,9 +42,9 @@ func (s *MemoryMovieStore) GetByID(id string) (*models.Movie, error) {
 func (s *MemoryMovieStore) Create(movie *models.Movie) error {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
-
+	counter++
 	s.movies = append(s.movies, models.Movie{
-		ID:    movie.ID,
+		ID:    strconv.Itoa(counter),
 		Isbn:  movie.Isbn,
 		Title: movie.Title,
 		Director: &models.Director{
@@ -50,6 +53,34 @@ func (s *MemoryMovieStore) Create(movie *models.Movie) error {
 		},
 	})
 	return nil
+}
+
+func (s *MemoryMovieStore) Delete(ID string) error {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	for index, movie := range s.movies {
+		if movie.ID == ID {
+			s.movies = append(s.movies[:index], s.movies[index+1:]...)
+			return nil
+		}
+	}
+	return errors.New("movie not found")
+}
+
+func (s *MemoryMovieStore) Update(id string, movieIn *models.Movie) error {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	for _, movie := range s.movies {
+		if movie.ID == id {
+			movie.Isbn = movieIn.Isbn
+			movie.Title = movieIn.Title
+			movie.Director.FirstName = movieIn.Director.FirstName
+			movie.Director.LastName = movieIn.Director.LastName
+			return nil
+		}
+	}
+	return errors.New("movie not found")
 }
 
 // Implement other methods (Create, Update, Delete) similarly

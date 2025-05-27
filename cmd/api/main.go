@@ -25,7 +25,7 @@ func main() {
 	r.HandleFunc("/movie", movieHandler.GetMovie).Methods("GET")
 	r.HandleFunc("/movies", movieHandler.CreateMovie).Methods("POST")
 	//r.HandleFunc("/movies/{id}", movieHandler.UpdateMovie).Methods("PUT")
-	//r.HandleFunc("/movies/{id}", movieHandler.DeleteMovie).Methods("DELETE")
+	r.HandleFunc("/movie", movieHandler.DeleteMovie).Methods("DELETE")
 
 	fmt.Printf("Starting server at port 8000\n")
 	log.Fatal(http.ListenAndServe(":8000", r))
