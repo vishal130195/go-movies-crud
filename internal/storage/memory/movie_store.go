@@ -7,11 +7,10 @@ import (
 	"sync"
 )
 
-var counter = 0
-
 type MemoryMovieStore struct {
-	mutex  sync.RWMutex
-	movies []models.Movie
+	mutex   sync.RWMutex
+	movies  []models.Movie
+	counter uint64
 }
 
 func NewMemoryMovieStore() *MemoryMovieStore {
@@ -42,9 +41,9 @@ func (s *MemoryMovieStore) GetByID(id string) (*models.Movie, error) {
 func (s *MemoryMovieStore) Create(movie *models.Movie) error {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
-	counter++
+	s.counter++
 	s.movies = append(s.movies, models.Movie{
-		ID:    strconv.Itoa(counter),
+		ID:    strconv.FormatUint(s.counter, 10),
 		Isbn:  movie.Isbn,
 		Title: movie.Title,
 		Director: &models.Director{
