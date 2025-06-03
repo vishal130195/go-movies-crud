@@ -82,5 +82,3 @@ func (s *MemoryMovieStore) Update(id string, movieIn *models.Movie) error {
 	}
 	return errors.New("movie not found")
 }
-
-// Implement other methods (Create, Update, Delete) similarly
