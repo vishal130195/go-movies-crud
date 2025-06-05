@@ -10,6 +10,7 @@ type Movie struct {
 
 // Director struct represents a director entity
 type Director struct {
+	ID        string `json:"id"`
 	FirstName string `json:"firstname"`
 	LastName  string `json:"lastname"`
 }

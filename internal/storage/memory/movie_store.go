@@ -3,6 +3,7 @@ package memory
 import (
 	"errors"
 	"github.com/vishal130195/go-movies-crud/internal/models"
+	"github.com/vishal130195/go-movies-crud/internal/utils"
 	"strconv"
 	"sync"
 )
@@ -74,6 +75,8 @@ func (s *MemoryMovieStore) Update(id string, movieIn *models.Movie) error {
 		if movie.ID == id {
 			movie.Isbn = movieIn.Isbn
 			movie.Title = movieIn.Title
+			// Todo Reuse director instead creating again for every movie would be enhancement.
+			movie.Director.ID = utils.GetUUID()
 			movie.Director.FirstName = movieIn.Director.FirstName
 			movie.Director.LastName = movieIn.Director.LastName
 			return nil
