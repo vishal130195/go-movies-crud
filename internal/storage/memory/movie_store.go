@@ -52,8 +52,6 @@ func (s *MemoryMovieStore) Create(movie *models.Movie) (*models.Movie, error) {
 			FirstName: movie.Director.FirstName,
 			LastName:  movie.Director.LastName,
 		},
-	})
-	return nil
 	}
 	s.movies = append(s.movies, *movie)
 	return movie, nil
