@@ -79,25 +79,25 @@
 ### Get All Movies
 
 ```bash
-curl http://localhost:8000/movies
+curl http://localhost:8000/movies | jq
 ```
 
 ### Get Movie by ID
 
 ```bash
-curl http://localhost:8000/movies/1
+curl http://localhost:8000/movies/1 | jq
 ```
 
 ### Create a New Movie
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{"isbn":"123456789","title":"Interstellar","director":{"firstname":"Christopher","lastname":"Nolan"}}' http://localhost:8000/movies
+curl -X POST -H "Content-Type: application/json" -d '{"isbn":"123456789","title":"Interstellar","director":{"firstname":"Christopher","lastname":"Nolan"}}' http://localhost:8000/movies | jq
 ```
 
 ### Update a Movie
 
 ```bash
-curl -X PUT -H "Content-Type: application/json" -d '{"isbn":"123456789","title":"Interstellar Updated","director":{"firstname":"Christopher","lastname":"Nolan"}}' http://localhost:8000/movies/1
+curl -X PUT -H "Content-Type: application/json" -d '{"isbn":"123456789","title":"Interstellar Updated","director":{"firstname":"Christopher","lastname":"Nolan"}}' http://localhost:8000/movies/1 | jq
 ```
 
 ### Delete a Movie
