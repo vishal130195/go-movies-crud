@@ -37,15 +37,15 @@ func (h *MovieHandler) GetMovies(w http.ResponseWriter, _ *http.Request) {
 // createMovie handles POST requests to create a new movie
 func (h *MovieHandler) CreateMovie(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var movie models.Movie
+	var movie *models.Movie = new(models.Movie)
 
 	// Decode the request body into a Movie struct
-	err := json.NewDecoder(r.Body).Decode(&movie)
+	err := json.NewDecoder(r.Body).Decode(movie)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	err = h.store.Create(&movie)
+	movie, err = h.store.Create(movie)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

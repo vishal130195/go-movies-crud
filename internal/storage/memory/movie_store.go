@@ -39,20 +39,24 @@ func (s *MemoryMovieStore) GetByID(id string) (*models.Movie, error) {
 }
 
 // Create adds a new movie to the in-memory store, ensuring thread-safe access with a read lock and unlock mechanism.
-func (s *MemoryMovieStore) Create(movie *models.Movie) error {
+func (s *MemoryMovieStore) Create(movie *models.Movie) (*models.Movie, error) {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 	s.counter++
-	s.movies = append(s.movies, models.Movie{
+	movie = &models.Movie{
 		ID:    strconv.FormatUint(s.counter, 10),
 		Isbn:  movie.Isbn,
 		Title: movie.Title,
 		Director: &models.Director{
+			ID:        utils.GetUUID(),
 			FirstName: movie.Director.FirstName,
 			LastName:  movie.Director.LastName,
 		},
 	})
 	return nil
+	}
+	s.movies = append(s.movies, *movie)
+	return movie, nil
 }
 
 func (s *MemoryMovieStore) Delete(ID string) error {
@@ -76,7 +80,7 @@ func (s *MemoryMovieStore) Update(id string, movieIn *models.Movie) error {
 			movie.Isbn = movieIn.Isbn
 			movie.Title = movieIn.Title
 			// Todo Reuse director instead creating again for every movie would be enhancement.
-			movie.Director.ID = utils.GetUUID()
+			// movie.Director.ID = utils.GetUUID()
 			movie.Director.FirstName = movieIn.Director.FirstName
 			movie.Director.LastName = movieIn.Director.LastName
 			return nil

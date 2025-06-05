@@ -6,7 +6,7 @@ import "github.com/vishal130195/go-movies-crud/internal/models"
 type MovieStore interface {
 	GetAll() ([]models.Movie, error)
 	GetByID(id string) (*models.Movie, error)
-	Create(movie *models.Movie) error
+	Create(movie *models.Movie) (*models.Movie, error)
 	Update(id string, movie *models.Movie) error
 	Delete(id string) error
 }
