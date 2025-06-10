@@ -2,12 +2,11 @@ package main
 
 import (
 	"fmt"
+	"github.com/gorilla/mux"
 	"github.com/vishal130195/go-movies-crud/internal/handlers"
 	"github.com/vishal130195/go-movies-crud/internal/storage/memory"
 	"log"
 	"net/http"
-
-	"github.com/gorilla/mux"
 )
 
 func main() {
@@ -21,8 +20,8 @@ func main() {
 	r := mux.NewRouter()
 
 	// Define routes
-	r.HandleFunc("/movies", movieHandler.GetMovies).Methods("GET")
 	r.HandleFunc("/movie", movieHandler.GetMovie).Methods("GET")
+	r.HandleFunc("/movies", movieHandler.GetMovies).Methods("GET")
 	r.HandleFunc("/movies", movieHandler.CreateMovie).Methods("POST")
 	r.HandleFunc("/movie/update", movieHandler.UpdateMovie).Methods("PUT")
 	r.HandleFunc("/movie/delete", movieHandler.DeleteMovie).Methods("DELETE")
