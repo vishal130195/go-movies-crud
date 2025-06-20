@@ -3,6 +3,7 @@ package utils
 import (
 	"log"
 	"os/exec"
+	"strings"
 )
 
 func GetUUID() string {
@@ -10,5 +11,6 @@ func GetUUID() string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return string(newUUID)
+	// Remove trailing newline
+	return strings.TrimSpace(string(newUUID))
 }

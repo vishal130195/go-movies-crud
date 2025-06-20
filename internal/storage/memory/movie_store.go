@@ -38,10 +38,10 @@ func (s *MemoryMovieStore) GetByID(id string) (*models.Movie, error) {
 	return nil, errors.New("movie not found")
 }
 
-// Create adds a new movie to the in-memory store, ensuring thread-safe access with a read lock and unlock mechanism.
+// Create adds a new movie to the in-memory store, ensuring thread-safe access with a write lock and unlock mechanism.
 func (s *MemoryMovieStore) Create(movie *models.Movie) (*models.Movie, error) {
-	s.mutex.RLock()
-	defer s.mutex.RUnlock()
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
 	s.counter++
 	movie = &models.Movie{
 		ID:    strconv.FormatUint(s.counter, 10),
@@ -73,14 +73,13 @@ func (s *MemoryMovieStore) Delete(ID string) error {
 func (s *MemoryMovieStore) Update(id string, movieIn *models.Movie) error {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
-	for _, movie := range s.movies {
-		if movie.ID == id {
-			movie.Isbn = movieIn.Isbn
-			movie.Title = movieIn.Title
-			// Todo Reuse director instead creating again for every movie would be enhancement.
-			// movie.Director.ID = utils.GetUUID()
-			movie.Director.FirstName = movieIn.Director.FirstName
-			movie.Director.LastName = movieIn.Director.LastName
+	for i := range s.movies {
+		if s.movies[i].ID == id {
+			s.movies[i].Isbn = movieIn.Isbn
+			s.movies[i].Title = movieIn.Title
+			// Keep the existing director ID, just update names
+			s.movies[i].Director.FirstName = movieIn.Director.FirstName
+			s.movies[i].Director.LastName = movieIn.Director.LastName
 			return nil
 		}
 	}
