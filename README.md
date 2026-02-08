@@ -122,6 +122,20 @@ The server will start, and you can access the API at `http://localhost:8000`.
 
 Feel free to explore and experiment with these endpoints using a tool like `curl` or Postman.
 
+## Documentation
+
+For a deeper understanding of the application's architecture and design:
+
+- **[Architecture Documentation](docs/ARCHITECTURE.md)** - Detailed system architecture, component descriptions, request flow, and API endpoints
+- **[Class Diagram Documentation](docs/CLASS_DIAGRAM.md)** - UML class diagrams, relationships, and detailed class descriptions
+
+These documents provide comprehensive insights into:
+- Layered architecture design
+- Component interactions and responsibilities
+- Data models and their relationships
+- Storage patterns and thread safety
+- Design principles and best practices
+
 ## Conclusion
 
 Congratulations! You have successfully set up and used the Movie API. Feel free to customize and extend the code according to your requirements.
