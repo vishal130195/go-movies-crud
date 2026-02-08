@@ -106,7 +106,7 @@ flowchart TB
 3. **MovieHandler** decodes the JSON request body into a Movie struct
 4. **MovieHandler** calls `store.Create(movie)` on the MovieStore interface
 5. **MemoryMovieStore** implements the Create method:
-   - Uses read lock (RLock) - Note: This is a thread safety limitation as it should use write lock
+   - Uses read lock (RLock) - Note: Thread safety limitation; should use write lock, which could lead to race conditions during concurrent creates
    - Generates a unique ID for the movie
    - Creates a Director entity with a UUID
    - Appends the movie to the in-memory slice
