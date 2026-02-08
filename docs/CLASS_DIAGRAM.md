@@ -164,7 +164,7 @@ classDiagram
 **Thread Safety**:
 - Read operations (`GetAll`, `GetByID`) use `RLock()` for concurrent access
 - Write operations (`Update`, `Delete`) use `Lock()` for exclusive access
-- Create uses `RLock()` as it appends to the slice
+- Create uses `RLock()` - Note: This is a limitation in the current implementation as it modifies both the counter and appends to the slice, which are write operations that should ideally use `Lock()` for proper thread safety
 
 **Relationships**:
 - **Implements** MovieStore interface
@@ -297,14 +297,19 @@ The `MemoryMovieStore` uses different locking strategies:
 1. **Read Lock (RLock)**: Used by:
    - `GetAll()` - Multiple goroutines can read simultaneously
    - `GetByID()` - Safe concurrent lookups
-   - `Create()` - Note: Uses RLock which may need review for append operations
+   - `Create()` - **Current implementation limitation**: Uses RLock even though it modifies the counter and appends to the slice
 
 2. **Write Lock (Lock)**: Used by:
    - `Update()` - Ensures exclusive access during modification
    - `Delete()` - Prevents concurrent modifications during deletion
 
+**Important Note**: The current implementation has a thread safety issue in `Create()` method:
+- It uses `RLock()` but modifies both `counter` (increment) and `movies` slice (append)
+- These are write operations that should use `Lock()` for proper thread safety
+- This could lead to race conditions under concurrent Create operations
+
 **Best Practice**: For production systems, consider:
-- Using proper write locks for `Create()` since it modifies the slice
+- Using proper write locks (`Lock()`) for `Create()` since it modifies the counter and slice
 - Implementing more granular locking mechanisms
 - Considering concurrent-safe data structures
 

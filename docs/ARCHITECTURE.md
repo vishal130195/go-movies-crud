@@ -176,7 +176,8 @@ The application uses the Repository pattern through the `MovieStore` interface, 
 
 The `MemoryMovieStore` uses `sync.RWMutex` to ensure thread-safe operations:
 - **Read operations** (GetAll, GetByID): Use `RLock()` for concurrent reads
-- **Write operations** (Create, Update, Delete): Use `Lock()` for exclusive access
+- **Write operations** (Update, Delete): Use `Lock()` for exclusive access
+- **Create operation**: Currently uses `RLock()` - this is a known limitation as it modifies the slice and counter, which should ideally use `Lock()` for proper thread safety
 
 ## Future Enhancements
 
