@@ -83,7 +83,7 @@ classDiagram
 
 **Fields**:
 - `ID` (string): Unique identifier for the movie, auto-generated on creation
-- `Isbn` (string): International Standard Book Number (used as a unique identifier)
+- `Isbn` (string): International Standard Book Number - a secondary identifier or catalog number for the movie
 - `Title` (string): The title of the movie
 - `Director` (*Director): Pointer to the Director entity associated with this movie
 
@@ -157,7 +157,7 @@ classDiagram
 - `NewMemoryMovieStore() *MemoryMovieStore`: Constructor that initializes a new store
 - `GetAll()`: Returns all movies (uses read lock)
 - `GetByID(id)`: Searches for and returns a movie by ID (uses read lock)
-- `Create(movie)`: Adds a new movie with generated IDs (uses read lock for creation)
+- `Create(movie)`: Adds a new movie with generated IDs (currently uses read lock - this is a thread safety limitation)
 - `Update(id, movie)`: Updates movie fields (uses write lock)
 - `Delete(id)`: Removes a movie from the slice (uses write lock)
 
